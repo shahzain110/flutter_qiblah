@@ -8,9 +8,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class QiblahMaps extends StatefulWidget {
-  static final meccaLatLong = const LatLng(21.422487, 39.826206);
+  static final meccaLatLong = const LatLng(36.7970897, 22.1641313);
   final meccaMarker = Marker(
-    markerId: MarkerId("mecca"),
+    markerId: MarkerId("Imam Reza Shrine"),
     position: meccaLatLong,
     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
     draggable: false,
@@ -22,11 +22,10 @@ class QiblahMaps extends StatefulWidget {
 
 class _QiblahMapsState extends State<QiblahMaps> {
   Completer<GoogleMapController> _controller = Completer();
-  LatLng position = LatLng(36.800636, 10.180358);
+  LatLng position = LatLng(36.288034, 59.6135618);
 
   Future<Position?>? _future;
   final _positionStream = StreamController<LatLng>.broadcast();
-
 
   @override
   void initState() {
@@ -53,9 +52,9 @@ class _QiblahMapsState extends State<QiblahMaps> {
               error: snapshot.error.toString(),
             );
 
-          if(snapshot.data != null) {
-            final loc = LatLng(
-                snapshot.data!.latitude, snapshot.data!.longitude);
+          if (snapshot.data != null) {
+            final loc =
+                LatLng(snapshot.data!.latitude, snapshot.data!.longitude);
             position = loc;
           } else
             _positionStream.sink.add(position);

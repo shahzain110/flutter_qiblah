@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math' show pi;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
+import 'package:flutter_qiblah/utils.dart';
 import 'package:flutter_qiblah_example/loading_indicator.dart';
 import 'package:flutter_qiblah_example/location_error_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,7 +18,6 @@ class _QiblahCompassState extends State<QiblahCompass> {
       StreamController<LocationStatus>.broadcast();
 
   get stream => _locationStreamController.stream;
-
   @override
   void initState() {
     _checkLocationStatus();
@@ -36,6 +35,7 @@ class _QiblahCompassState extends State<QiblahCompass> {
           if (snapshot.connectionState == ConnectionState.waiting)
             return LoadingIndicator();
           if (snapshot.data!.enabled == true) {
+            // print("we here");
             switch (snapshot.data!.status) {
               case LocationPermission.always:
               case LocationPermission.whileInUse:
@@ -89,25 +89,31 @@ class _QiblahCompassState extends State<QiblahCompass> {
   }
 }
 
-class QiblahCompassWidget extends StatelessWidget {
+class QiblahCompassWidget extends StatefulWidget {
+  @override
+  _QiblahCompassWidgetState createState() => _QiblahCompassWidgetState();
+}
+
+class _QiblahCompassWidgetState extends State<QiblahCompassWidget> {
   final _compassSvg = SvgPicture.asset('assets/compass.svg');
+
   final _needleSvg = SvgPicture.asset(
-    'assets/needle.svg',
+    'assets/needle3.svg',
     fit: BoxFit.contain,
     height: 300,
     alignment: Alignment.center,
   );
-
+  static bool ImamRezabtn = false;
+  static bool Qiblabtn = false;
   @override
   Widget build(BuildContext context) {
+    Utils obj = new Utils();
     return StreamBuilder(
       stream: FlutterQiblah.qiblahStream,
       builder: (_, AsyncSnapshot<QiblahDirection> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
           return LoadingIndicator();
-
         final qiblahDirection = snapshot.data!;
-
         return Stack(
           alignment: Alignment.center,
           children: <Widget>[
@@ -121,8 +127,23 @@ class QiblahCompassWidget extends StatelessWidget {
               child: _needleSvg,
             ),
             Positioned(
-              bottom: 8,
-              child: Text("${qiblahDirection.offset.toStringAsFixed(3)}°"),
+              bottom: 5,
+              child: Column(children: [
+                OutlinedButton(
+                  child: Qiblabtn ? Text("Qibla") : Text("Imam Reza Shrine"),
+                  onPressed: () {
+                    Qiblabtn ? obj.btnText("Qibla") : obj.btnText("Shrine");
+                    setState(() {
+                      Qiblabtn = !Qiblabtn;
+                      ImamRezabtn = !ImamRezabtn;
+                    });
+                  },
+                ),
+                Text(
+                  "${qiblahDirection.offset.toStringAsFixed(3)}°\n Anjuman e Ghulaman e Mustafa",
+                  textAlign: TextAlign.center,
+                ),
+              ]),
             )
           ],
         );

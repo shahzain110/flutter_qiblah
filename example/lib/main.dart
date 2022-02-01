@@ -26,7 +26,8 @@ class _MyAppState extends State<MyApp> {
       darkTheme: ThemeData.dark().copyWith(accentColor: Color(0xffecce6d)),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          centerTitle: true,
+          title: Text('Imam Raza (as) Shrine Director'),
         ),
         body: FutureBuilder(
           future: _deviceSupport,
@@ -37,11 +38,11 @@ class _MyAppState extends State<MyApp> {
               return Center(
                 child: Text("Error: ${snapshot.error.toString()}"),
               );
-
-            if (snapshot.data!)
+            if (snapshot.data!) {
               return QiblahCompass();
-            else
+            } else {
               return QiblahMaps();
+            }
           },
         ),
       ),
@@ -74,7 +75,6 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 }*/
-
 
 // class CenterEx extends StatelessWidget {
 //   @override

@@ -1,9 +1,22 @@
 import 'dart:math' show sin, cos, tan, atan;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:vector_math/vector_math.dart' show radians, degrees;
+import 'qiblah_compass.dart';
 
 class Utils {
-  static final _deLa = radians(21.422487);
-  static final _deLo = radians(39.826206);
+  static var _deLa = 0.0;
+  static var _deLo = 0.0;
+
+  void btnText(String btnText) {
+    if (btnText == "Qibla") {
+      _deLa = radians(21.4225);
+      _deLo = radians(39.8262);
+    } else {
+      _deLa = radians(36.2880);
+      _deLo = radians(59.6158);
+    }
+  }
 
   static double getOffsetFromNorth(
       double currentLatitude, double currentLongitude) {
